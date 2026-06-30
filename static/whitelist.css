@@ -1,0 +1,216 @@
+/* whitelist.css — extends alerts.css theme/variables for the whitelist page */
+
+.panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.panel-header i {
+    color: var(--accent);
+}
+
+.panel-sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'Space Mono', monospace;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+/* ── CMD instructions ── */
+.instructions-list {
+    list-style: none;
+    counter-reset: step;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.instructions-list li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 30px;
+    font-size: 12.5px;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.instructions-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    border: 1px solid var(--border-accent);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kbd {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 4px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-mid);
+    font-size: 11px;
+    color: var(--text-primary);
+}
+
+.kbd.mono {
+    font-family: 'Space Mono', monospace;
+}
+
+.note-box {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: rgba(245, 197, 24, 0.05);
+    border: 1px solid rgba(245, 197, 24, 0.18);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.note-box i {
+    color: var(--yellow);
+    margin-top: 1px;
+}
+
+.note-box strong {
+    color: var(--text-primary);
+}
+
+.muted-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+}
+
+/* ── Add form ── */
+.add-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form-input {
+    flex: 1;
+    min-width: 180px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    outline: none;
+    transition: border-color var(--transition);
+}
+
+.form-input.mono {
+    font-family: 'Space Mono', monospace;
+}
+
+.form-input:focus {
+    border-color: var(--border-accent);
+}
+
+.add-btn {
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(0, 232, 160, 0.3);
+    background: var(--green-dim);
+    color: var(--green);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.add-btn:hover {
+    background: rgba(0, 232, 160, 0.18);
+}
+
+.form-msg {
+    margin-top: 8px;
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    color: var(--red);
+}
+
+/* ── Entries table ── */
+#entries-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.entry-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+
+.entry-ip {
+    font-size: 12.5px;
+    color: var(--accent);
+}
+
+.entry-label {
+    font-size: 12px;
+    color: var(--text-primary);
+}
+
+.entry-date {
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+
+.remove-btn {
+    justify-self: end;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 5px 9px;
+    transition: all var(--transition);
+}
+
+.remove-btn:hover {
+    border-color: rgba(255, 59, 92, 0.28);
+    color: var(--red);
+    background: var(--red-dim);
+}

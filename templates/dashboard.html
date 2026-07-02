@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    <div id="toast-container"></div>
     <div class="layout">
 
         <aside class="sidebar">
@@ -175,6 +176,42 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        /* ── Alert sound ── */
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioCtx();
+        document.addEventListener('click', () => {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }, { once: true });
+
+        function playAlertSound() {
+            const beep = (freq, start, dur) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.type = 'square';
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.5, audioCtx.currentTime + start);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + start + dur);
+                osc.start(audioCtx.currentTime + start);
+                osc.stop(audioCtx.currentTime + start + dur);
+            };
+            beep(880, 0, 0.18);
+            beep(1046, 0.2, 0.18);
+        }
+
+        function showAlertToast(alert) {
+            const toast = document.createElement('div');
+            toast.className = 'alert-toast';
+            toast.innerHTML = `<i class="bi bi-exclamation-triangle-fill"></i> ${alert.alert_type} detected from ${alert.source_ip}`;
+            document.getElementById('toast-container').prepend(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
         /* ── Trend Chart ── */
         const trendCtx = document.getElementById('trendChart').getContext('2d');
         const trendChart = new Chart(trendCtx, {
@@ -324,11 +361,11 @@
                     details = `${d.trusted_mac} → ${att}`;
                 }
                 return `<tr class="row-new">
-                    <td class="ts">${a.timestamp}</td>
-                    <td class="ip">${a.source_ip}</td>
-                    <td>${badge}</td>
-                    <td class="td-details">${details}</td>
-                </tr>`;
+                        <td class="ts">${a.timestamp}</td>
+                        <td class="ip">${a.source_ip}</td>
+                        <td>${badge}</td>
+                        <td class="td-details">${details}</td>
+                    </tr>`;
             }).join('');
         }
 
@@ -381,6 +418,7 @@
                 if (!data.alerts) return;
                 allAlerts = data.alerts;
                 if (allAlerts.length === lastCount) return;
+                const isNewAlert = lastCount !== -1 && allAlerts.length > lastCount;
                 lastCount = allAlerts.length;
 
                 document.getElementById('stat-total').textContent = allAlerts.length;
@@ -391,6 +429,10 @@
                 updateTrend(allAlerts);
                 updateDonut(allAlerts);
                 renderTable(getDisplayed());
+                if (isNewAlert) {
+                    playAlertSound();
+                    showAlertToast(allAlerts[0]);
+                }
             } catch (e) {
                 console.error(e);
             }
